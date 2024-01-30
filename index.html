@@ -18,6 +18,31 @@
         <img src="Berlin.jpg" alt="Berlin Cityscape">
     </div>
     <div id="model-container"></div>
+<script>
+    // Set up Three.js scene
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('model-container').appendChild(renderer.domElement);
+
+    // Load the .obj model
+    var loader = new THREE.OBJLoader();
+    loader.load('Hausmap.obj', function (object) {
+        scene.add(object);
+    });
+
+    // Set camera position
+    camera.position.z = 5;
+
+    // Render the scene
+    function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+    }
+
+    animate();
+</script>
 
 
     <script src="main.js"></script>
