@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <script src="https://threejs.org/build/three.min.js"></script>
     <link rel="stylesheet" href="styles.css">
     <title>Berlin</title>
     <style>
@@ -32,6 +33,18 @@
         scene.add(object);
     });
 
+    // Annotate the model
+    function addAnnotation(text, position) {
+    var label = document.createElement('div');
+    label.className = 'annotation';
+    label.textContent = text;
+
+    var labelObject = new THREE.CSS2DObject(label);
+    labelObject.position.copy(position);
+    scene.add(labelObject);
+}
+
+
     // Set camera position
     camera.position.z = 5;
 
@@ -46,7 +59,6 @@
 
 
     <script src="main.js"></script>
-    <script src="https://threejs.org/build/three.min.js"></script>
 </body>
 </html>
 
