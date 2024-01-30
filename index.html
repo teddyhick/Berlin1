@@ -34,15 +34,34 @@
     });
 
     // Annotate the model
-    function addAnnotation(text, position) {
+    // Function to add annotation with expandable behavior
+function addExpandableAnnotation(text, position, expandedText) {
+    // Create a DOM element for the annotation
     var label = document.createElement('div');
     label.className = 'annotation';
     label.textContent = text;
 
+    // Create a THREE.CSS2DObject to position the annotation in 3D space
     var labelObject = new THREE.CSS2DObject(label);
+
+    // Set the position based on the provided Vector3 coordinates
     labelObject.position.copy(position);
+
+    // Add an event listener for the click event to handle expansion
+    label.addEventListener('click', function () {
+        if (label.textContent === text) {
+            // If the label is not expanded, expand it
+            label.textContent = expandedText;
+        } else {
+            // If the label is expanded, collapse it
+            label.textContent = text;
+        }
+    });
+
+    // Add the annotation to the scene
     scene.add(labelObject);
 }
+
 
 
     // Set camera position
