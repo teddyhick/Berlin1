@@ -21,7 +21,6 @@
         }
     </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="threeimport"></script>
 </head>
 <body>
 
@@ -39,7 +38,7 @@
 
     // Load the .obj model
     const loader = new THREE.ObjectLoader();
-    loader.load('Hausmap1.json', function (object) {
+    loader.load('Hausmap.obj', function (object) {
         scene.add(object);
     });
     // Annotate the model
