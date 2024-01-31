@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <link rel="shortcut icon" href="#" />
-    <script src="https://threejs.org/build/three.min.js"></script>
-    <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+    <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@<version>/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@<version>/examples/jsm/"
+    }
+  }
+</script>
     <link rel="stylesheet" href="styles.css">
     <title>Berlin</title>
     <style>
@@ -14,14 +20,6 @@
             height: auto;
         }
     </style>
-    <script type="importmap">
-        {
-          "imports": {
-            "three": "https://unpkg.com/three@v0.160.1/build/three.module.js",
-            "three/addons/": "https://unpkg.com/three@v0.160.1/examples/jsm/"
-          }
-        }
-      </script>
       <script>
         
       </script>
