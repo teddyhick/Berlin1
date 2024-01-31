@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <script src="https://threejs.org/build/three.min.js"></script>
+    <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
     <link rel="stylesheet" href="styles.css">
     <title>Berlin</title>
     <style>
@@ -28,10 +29,11 @@
     document.getElementById('model-container').appendChild(renderer.domElement);
 
     // Load the .obj model
-    var loader = new THREE.OBJLoader();
-    loader.load('Hausmap.obj', function (object) {
-        scene.add(object);
-    });
+var loader = new OBJLoader();
+loader.load('Hausmap.obj', function (object) {
+    scene.add(object);
+});
+
 
     // Annotate the model
     // Function to add annotation with expandable behavior
