@@ -1,0 +1,10 @@
+body {
+    background-color: black;
+    color: white; /* Optional: Set text color to white for better visibility on a dark background */
+    margin: 0; /* Optional: Remove default body margin */
+    padding: 0; /* Optional: Remove default body padding */
+}
+
+.header {
+    /* Add any additional styling for the header if needed */
+}
