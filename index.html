@@ -7,7 +7,7 @@
     <script type="importmap">
   {
     "imports": {
-      "THREE": "https://unpkg.com/three@<version>/build/three.module.js",
+      "three": "https://unpkg.com/three@<version>/build/three.module.js",
       "three/addons/": "https://unpkg.com/three@<version>/examples/jsm/"
     }
   }
@@ -37,6 +37,7 @@
     document.getElementById('model-container').appendChild(renderer.domElement);
 
     // Load the .obj model
+    import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
     const loader = new THREE.FBXLoader();
     loader.load('Hausmap1.fbx', function (object) {
         scene.add(object);
