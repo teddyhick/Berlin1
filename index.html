@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="shortcut icon" href="#" />
     <script src="https://threejs.org/build/three.min.js"></script>
     <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
     <link rel="stylesheet" href="styles.css">
@@ -13,6 +14,17 @@
             height: auto;
         }
     </style>
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://unpkg.com/three@v0.160.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@v0.160.1/examples/jsm/"
+          }
+        }
+      </script>
+      <script>
+        
+      </script>
 </head>
 <body>
 
@@ -20,8 +32,7 @@
         <img src="Berlin.jpg" alt="Berlin Cityscape">
     </div>
     <div id="model-container"></div>
-<script>
-    import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+    <script>
     // Set up Three.js scene
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -30,7 +41,7 @@
     document.getElementById('model-container').appendChild(renderer.domElement);
 
     // Load the .obj model
-    var loader = new OBJLoader();
+    const loader = new THREE.ObjectLoader();
     loader.load('Hausmap.obj', function (object) {
         scene.add(object);
     });
@@ -75,10 +86,7 @@ function addExpandableAnnotation(text, position, expandedText) {
     }
 
     animate();
-</script>
-
-
-    <script src="main.js"></script>
+    </script>
 </body>
 </html>
 
