@@ -21,6 +21,7 @@
     </div>
     <div id="model-container"></div>
 <script>
+    import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
     // Set up Three.js scene
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -29,14 +30,10 @@
     document.getElementById('model-container').appendChild(renderer.domElement);
 
     // Load the .obj model
-<script>
-    var loader = new THREE.OBJLoader();
-    loader.load('path/to/your/model.obj', function (object) {
+    var loader = new OBJLoader();
+    loader.load('Hausmap.obj', function (object) {
         scene.add(object);
     });
-</script>
-
-
     // Annotate the model
     // Function to add annotation with expandable behavior
 function addExpandableAnnotation(text, position, expandedText) {
