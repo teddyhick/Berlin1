@@ -37,7 +37,7 @@
     document.getElementById('model-container').appendChild(renderer.domElement);
 
     // Load the .obj model
-    const loader = new THREE.ObjectLoader();
+    const loader = new THREE.OBJLoader();
     loader.load('Hausmap.obj', function (object) {
         scene.add(object);
     });
