@@ -29,10 +29,12 @@
     document.getElementById('model-container').appendChild(renderer.domElement);
 
     // Load the .obj model
-var loader = new OBJLoader();
-loader.load('Users/teddyhickenlooper/Desktop/hausmap.obj', function (object) {
-    scene.add(object);
-});
+<script>
+    var loader = new THREE.OBJLoader();
+    loader.load('path/to/your/model.obj', function (object) {
+        scene.add(object);
+    });
+</script>
 
 
     // Annotate the model
