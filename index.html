@@ -37,8 +37,8 @@
     document.getElementById('model-container').appendChild(renderer.domElement);
 
     // Load the .obj model
-    const loader = new THREE.OBJLoader();
-    loader.load('Hausmap.obj', function (object) {
+    const loader = new THREE.FBXLoader();
+    loader.load('Hausmap1.fbx', function (object) {
         scene.add(object);
     });
     // Annotate the model
