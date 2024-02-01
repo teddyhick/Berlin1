@@ -20,7 +20,8 @@
             height: auto;
         }
     </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.skypack.dev/three@110.0.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three-fbx-loader@3.0.0/dist/three-fbx-loader.js"></script>
 </head>
 <body>
 
@@ -37,7 +38,6 @@
     document.getElementById('model-container').appendChild(renderer.domElement);
 
     // Load the .obj model
-    import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
     const loader = new THREE.FBXLoader();
     loader.load('Hausmap1.fbx', function (object) {
         scene.add(object);
