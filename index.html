@@ -4,14 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <link rel="shortcut icon" href="#" />
-    <script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@<version>/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@<version>/examples/jsm/",
-      "three/fbx/": "https://unpkg.com/three@<version>/examples/jsm/loaders/FBXloader"
-    }
-  }
+    <script type="module">
+  import * as THREE from 'https://unpkg.com/three@<version>/build/three.module.js';
+  import { FBXLoader } from 'https://unpkg.com/three@<version>/examples/jsm/loaders/FBXLoader.js';
 </script>
     <link rel="stylesheet" href="styles.css">
     <title>Berlin</title>
@@ -30,14 +25,14 @@
     <div id="model-container"></div>
     <script>
     // Set up Three.js scene
-    var scene = new three.Scene();
-    var camera = new three.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    var renderer = new three.WebGLRenderer();
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById('model-container').appendChild(renderer.domElement);
 
     // Load the .obj model
-    const loader = new three.FBXLoader();
+    const loader = new THREE.FBXLoader();
     loader.load('Hausmap1.fbx', function (object) {
         scene.add(object);
     });
@@ -50,7 +45,7 @@ function addExpandableAnnotation(text, position, expandedText) {
     label.textContent = text;
 
     // Create a THREE.CSS2DObject to position the annotation in 3D space
-    var labelObject = new three.CSS2DObject(label);
+    var labelObject = new THREE.CSS2DObject(label);
 
     // Set the position based on the provided Vector3 coordinates
     labelObject.position.copy(position);
