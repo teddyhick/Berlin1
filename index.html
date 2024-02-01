@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <script src="node_modules/three/build/three.module.js"></script>
     <link rel="stylesheet" href="styles.css">
     <title>Berlin</title>
     <style>
@@ -20,9 +19,9 @@
         <img src="Berlin.jpg" alt="Berlin Cityscape">
     </div>
     <script type="module">
-        import * as THREE from /node_modules/three/build/three.module.js
-        import { OBJLoader } from /node_modules/three/examples/jsm/loaders
-        import { OrbitControls } from /node_modules/three/addons/controls/OrbitControls.js 
+        import * as THREE from node_modules/three/build/three.module.js
+        import { OBJLoader } from node_modules/three/examples/jsm/loaders
+        import { OrbitControls } from node_modules/three/addons/controls/OrbitControls.js 
 
         // Set up Three.js scene
         const scene = new THREE.Scene();
@@ -93,8 +92,6 @@
         // Example of adding an expandable annotation
     </script>
     <script type="module">
-        #import * as THREE from 'https://raw.githubusercontent.com/teddyhick/Berlin1/tree/main/node_modules/three/build/three.module.js';
-        #import { CSS2DRenderer, CSS2DObject } from 'https://raw.githubusercontent.com/teddyhick/Berlin1/tree/main/node_modules/three/examples/jsm/renderers/CSS2DRenderer.js';
         addExpandableAnnotation("The End", new THREE.Vector3(-5, 12, .867), "Vodka Mates and Food");
     </script>
 </body>
