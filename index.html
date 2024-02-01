@@ -5,79 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <link rel="shortcut icon" href="#" />
     <script type="module">
-  import * as THREE from 'https://unpkg.com/three@<version>/build/three.module.js';
-  import { FBXLoader } from 'https://unpkg.com/three@<version>/examples/jsm/loaders/FBXLoader.js';
-</script>
-    <link rel="stylesheet" href="styles.css">
-    <title>Berlin</title>
+        import * as THREE from 'https://unpkg.com/three@latest/build/three.module.js';
+        import { FBXLoader } from 'https://unpkg.com/three@latest/examples/jsm/loaders/FBXLoader.js';
+        import { CSS2DRenderer, CSS2DObject } from 'https://unpkg.com/three@latest/examples/jsm/renderers/CSS2DRenderer.js';
+
+        // Set up Three.js scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        const cssRenderer = new CSS2DRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        cssRenderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        document.body.appendChild(cssRenderer.domElement);
+
+        // Load the .fbx model
+        const loader = new FBXLoader();
+        loader.load('Hausmap1.fbx', function (object) {
+            scene.add(object);
+        });
+
+        // Set camera position
+        camera.position.z = 5;
+
+        // Render the scene
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+            cssRenderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
     <style>
-        .header img {
-            max-width: 100%;
-            height: auto;
+        .annotation {
+            position: absolute;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-
-    <div class="header">
-        <img src="Berlin.jpg" alt="Berlin Cityscape">
-    </div>
     <div id="model-container"></div>
     <script>
-    // Set up Three.js scene
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    var renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('model-container').appendChild(renderer.domElement);
-
-    // Load the .obj model
-    const loader = new THREE.FBXLoader();
-    loader.load('Hausmap1.fbx', function (object) {
-        scene.add(object);
-    });
-    // Annotate the model
-    // Function to add annotation with expandable behavior
-function addExpandableAnnotation(text, position, expandedText) {
-    // Create a DOM element for the annotation
-    var label = document.createElement('div');
-    label.className = 'annotation';
-    label.textContent = text;
-
-    // Create a THREE.CSS2DObject to position the annotation in 3D space
-    var labelObject = new THREE.CSS2DObject(label);
-
-    // Set the position based on the provided Vector3 coordinates
-    labelObject.position.copy(position);
-
-    // Add an event listener for the click event to handle expansion
-    label.addEventListener('click', function () {
-        if (label.textContent === text) {
-            // If the label is not expanded, expand it
-            label.textContent = expandedText;
-        } else {
-            // If the label is expanded, collapse it
+        // Function to add annotation with expandable behavior
+        function addExpandableAnnotation(text, position, expandedText) {
+            // Create a DOM element for the annotation
+            var label = document.createElement('div');
+            label.className = 'annotation';
             label.textContent = text;
+
+            // Create a THREE.CSS2DObject to position the annotation in 3D space
+            var labelObject = new CSS2DObject(label);
+
+            // Set the position based on the provided Vector3 coordinates
+            labelObject.position.copy(position);
+
+            // Add an event listener for the click event to handle expansion
+            label.addEventListener('click', function () {
+                if (label.textContent === text) {
+                    // If the label is not expanded, expand it
+                    label.textContent = expandedText;
+                } else {
+                    // If the label is expanded, collapse it
+                    label.textContent = text;
+                }
+            });
+
+            // Add the annotation to the scene
+            scene.add(labelObject);
         }
-    });
 
-    // Add the annotation to the scene
-    scene.add(labelObject);
-}
-
-
-
-    // Set camera position
-    camera.position.z = 5;
-
-    // Render the scene
-    function animate() {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
-    }
-
-    animate();
+        // Example of adding an expandable annotation
+        addExpandableAnnotation('Annotation 1', new THREE.Vector3(0, 1, 0), 'Expanded text for Annotation 1');
     </script>
 </body>
 </html>
-
