@@ -30,14 +30,14 @@
     <div id="model-container"></div>
     <script>
     // Set up Three.js scene
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    var renderer = new THREE.WebGLRenderer();
+    var scene = new three.Scene();
+    var camera = new three.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var renderer = new three.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById('model-container').appendChild(renderer.domElement);
 
     // Load the .obj model
-    const loader = new THREE.FBXLoader();
+    const loader = new three.FBXLoader();
     loader.load('Hausmap1.fbx', function (object) {
         scene.add(object);
     });
@@ -50,7 +50,7 @@ function addExpandableAnnotation(text, position, expandedText) {
     label.textContent = text;
 
     // Create a THREE.CSS2DObject to position the annotation in 3D space
-    var labelObject = new THREE.CSS2DObject(label);
+    var labelObject = new three.CSS2DObject(label);
 
     // Set the position based on the provided Vector3 coordinates
     labelObject.position.copy(position);
