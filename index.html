@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <script src="https://threejs.org/build/three.min.js"></script>
-    <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+    <link rel="shortcut icon" href="#" />
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://unpkg.com/three@v0.160.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@v0.160.1/examples/jsm/"
+          }
+        }
+      </script>
     <link rel="stylesheet" href="styles.css">
     <title>Berlin</title>
     <style>
@@ -20,22 +27,146 @@
         <img src="Berlin.jpg" alt="Berlin Cityscape">
     </div>
     <div id="model-container"></div>
-<script>
+    <script type="module">
+    import * as THREE from 'three';
     import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-    // Set up Three.js scene
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    var renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('model-container').appendChild(renderer.domElement);
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-    // Load the .obj model
-    var loader = new OBJLoader();
-    loader.load('Hausmap.obj', function (object) {
-        scene.add(object);
-    });
-    // Annotate the model
-    // Function to add annotation with expandable behavior
+var container;
+
+var camera, scene, renderer;
+
+init();
+animate();
+
+
+function init() {
+
+	container = document.createElement( 'div' );
+	document.body.appendChild( container );
+
+	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.01, 10 );
+	camera.position.z = 5;
+
+	// scene
+
+	scene = new THREE.Scene();
+
+	var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+	scene.add( ambientLight );
+
+	var pointLight = new THREE.PointLight( 0xffffff, 0.8 );
+	camera.add( pointLight );
+	scene.add( camera );
+
+	// model
+
+	var loader = new OBJLoader();
+
+	loader.load( 'Hausmap.obj', function ( obj ) {
+
+		// center asset
+
+		var box = new THREE.Box3().setFromObject( obj );
+		var center = new THREE.Vector3();
+		box.getCenter( center );
+		obj.position.sub( center );
+
+		// add to scene
+
+		scene.add( obj );
+
+	} );
+
+	//
+
+	renderer = new THREE.WebGLRenderer();
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	container.appendChild( renderer.domElement );
+
+	var controls = new OrbitControls( camera, renderer.domElement );
+
+	//
+
+	window.addEventListener( 'resize', onWindowResize, false );
+
+}
+
+function onWindowResize() {
+
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+
+	renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
+//
+
+function animate() {
+
+	requestAnimationFrame( animate );
+	render();
+
+}
+
+function render() {
+
+	renderer.render( scene, camera );
+
+}
+
+//     const scene = new THREE.Scene();
+// const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+// const renderer = new THREE.WebGLRenderer();
+// renderer.setSize( window.innerWidth, window.innerHeight );
+// document.body.appendChild( renderer.domElement );
+
+// const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+// const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+// const cube = new THREE.Mesh( geometry, material );
+// scene.add( cube );
+
+// camera.position.z = 5;
+
+// function animate() {
+// 	requestAnimationFrame( animate );
+
+// 	cube.rotation.x += 0.01;
+// 	cube.rotation.y += 0.01;
+
+// 	renderer.render( scene, camera );
+// }
+
+// animate();
+//     // // Set up Three.js scene
+//     // var scene = new THREE.Scene();
+//     // var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    
+//     // // Set camera position
+//     // camera.position.z = 5;
+
+//     // // Load the .obj model
+//     // const loader = new OBJLoader();
+//     // loader.load('Hausmap.obj', function (object) {
+//     //     scene.add(object);
+//     //     var renderer = new THREE.WebGLRenderer();
+//     //     renderer.setSize(window.innerWidth, window.innerHeight);
+//     //     document.getElementById('model-container').appendChild(renderer.domElement);
+
+//     //         // Render the scene
+//     // function animate() {
+//     //     requestAnimationFrame(animate);
+//     //     renderer.render(scene, camera);
+//     // }
+
+//     // animate();
+//     // });
+
+//     // Annotate the model
+//     // Function to add annotation with expandable behavior
 function addExpandableAnnotation(text, position, expandedText) {
     // Create a DOM element for the annotation
     var label = document.createElement('div');
@@ -64,21 +195,7 @@ function addExpandableAnnotation(text, position, expandedText) {
 }
 
 
-
-    // Set camera position
-    camera.position.z = 5;
-
-    // Render the scene
-    function animate() {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
-    }
-
-    animate();
-</script>
-
-
-    <script src="main.js"></script>
+    </script>
 </body>
 </html>
 
