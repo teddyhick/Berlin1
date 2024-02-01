@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <script src="node_modules/three/build/three.module.js"></script>
+    <script src="node_modules/three/examples/jsm/loaders/FBXLoader.js"></script>
+    <script src="node_modules/three/examples/jsm/renderers/CSS2DRenderer.js"></script>
     <link rel="stylesheet" href="styles.css">
     <title>Berlin</title>
     <style>
@@ -19,9 +22,6 @@
         <img src="Berlin.jpg" alt="Berlin Cityscape">
     </div>
     <script type="module">
-        import * as THREE from 'https://raw.githubusercontent.com/teddyhick/Berlin1/tree/main/node_modules/three/build/three.module.js';
-        import { FBXLoader } from 'https://raw.githubusercontent.com/teddyhick/Berlin1/tree/main/node_modules/three/examples/jsm/loaders/FBXLoader.js';
-        import { CSS2DRenderer, CSS2DObject } from 'https://raw.githubusercontent.com/teddyhick/Berlin1/tree/main/node_modules/three/examples/jsm/renderers/CSS2DRenderer.js';
 
         // Set up Three.js scene
         const scene = new THREE.Scene();
