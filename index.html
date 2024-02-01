@@ -89,7 +89,12 @@
         }
 
         // Example of adding an expandable annotation
-        addExpandableAnnotation('Annotation 1', new THREE.Vector3(0, 1, 0), 'Expanded text for Annotation 1');
+    </script>
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three@latest/build/three.module.js';
+        import { FBXLoader } from 'https://unpkg.com/three@latest/examples/jsm/loaders/FBXLoader.js';
+        import { CSS2DRenderer, CSS2DObject } from 'https://unpkg.com/three@latest/examples/jsm/renderers/CSS2DRenderer.js';
+        addExpandableAnnotation("The End", new THREE.Vector3(-5, 12, .867), "Vodka Mates and Food");
     </script>
 </body>
 </html>
