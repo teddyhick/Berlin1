@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Berlin</title>
+    <style>
+        .header img {
+            max-width: 100%;
+            height: auto;
+        }
+        .annotation {
+            position: absolute;
+            pointer-events: none;
+        }
+        #model-container {
+                    position: relative;
+                    width: 100%;
+                    height: 100vh; /* Adjust based on your needs */
+                    overflow: hidden;
+                }
+                .renderer {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="Berlin.jpg" alt="Berlin Cityscape">
+    </div>
+
+    <div id="model-container">
+
+        <script type="module">
+            import * as THREE from "three";
+            import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
+            import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+            import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
+            // Set up Three.js scene
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
+            const cssRenderer = new CSS2DRenderer();
+
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true; // Optional, but this gives a nice inertia feel
+            controls.dampingFactor = 0.05;
+            controls.screenSpacePanning = false;
+            controls.maxPolarAngle = Math.PI / 2; // Limit the orbit angle
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            cssRenderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('model-container').appendChild(renderer.domElement);
+            document.getElementById('model-container').appendChild(cssRenderer.domElement);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // soft white light
+            scene.add(ambientLight);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(0, 1, 0); // Adjust as needed
+            scene.add(directionalLight);
+
+            // Load the .fbx model
+            const loader = new OBJLoader();
+            loader.load('Hausmap.obj', function (object) {
+                object.position.set(-30, -10, -30);
+                scene.add(object);
+            });
+
+
+            /*function addExpandableAnnotation(text, position, expandedText) {
+                // Create a DOM element for the annotation
+                var label = document.createElement('div');
+                label.className = 'annotation';
+                label.textContent = text;
+
+                // Create a THREE.CSS2DObject to position the annotation in 3D space
+                var labelObject = new CSS2DObject(label);
+
+                // Set the position based on the provided Vector3 coordinates
+                labelObject.position.copy(position);
+
+                // Add an event listener for the click event to handle expansion
+                label.addEventListener('click', function () {
+                    if (label.textContent === text) {
+                        // If the label is not expanded, expand it
+                        label.textContent = expandedText;
+                    } else {
+                        // If the label is expanded, collapse it
+                        label.textContent = text;
+                    }
+                });
+
+                // Add the annotation to the scene
+                scene.add(labelObject);
+            }
+            addExpandableAnnotation("The End", new THREE.Vector3(0, 0, 0), "Vodka Mates and Food");
+            addExpandableAnnotation("Upper Bathroom", new THREE.Vector3(-2.5, 40, -5), "Place to take a Leak. Or vomit.");
+            addExpandableAnnotation("Boiler Room", new THREE.Vector3(13, 2, -7), "Nostradamus: 11 PM onward");
+            addExpandableAnnotation("Lounge", new THREE.Vector3(-25, 2, -9.14), "Vodka Mates and Food");
+            addExpandableAnnotation("The End", new THREE.Vector3(-25, 2, -9.14), "Vodka Mates and Food");
+            addExpandableAnnotation("The End", new THREE.Vector3(-25, 2, -9.14), "Vodka Mates and Food");
+            addExpandableAnnotation("The End", new THREE.Vector3(-25, 2, -9.14), "Vodka Mates and Food");
+            addExpandableAnnotation("The End", new THREE.Vector3(-25, 2, -9.14), "Vodka Mates and Food");
+            addExpandableAnnotation("The End", new THREE.Vector3(-25, 2, -9.14), "Vodka Mates and Food");
+            addExpandableAnnotation("The End", new THREE.Vector3(-25, 2, -9.14), "Vodka Mates and Food");
+            addExpandableAnnotation("The End", new THREE.Vector3(-25, 2, -9.14), "Vodka Mates and Food");
+            addExpandableAnnotation("The End", new THREE.Vector3(-25, 2, -9.14), "Vodka Mates and Food"); */
+                    function updateLabelTexture(sprite, newText) {
+            // Access the canvas from the sprite's texture
+            const canvas = sprite.material.map.image;
+            const context = canvas.getContext('2d');
+
+            // Clear the existing canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Write new text
+            context.fillText(newText, 10, 50);
+
+            // Update the texture
+            sprite.material.map.needsUpdate = true;
+            }
+
+            function createTextLabel(text, position, expandedText = "", color, font) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 300; // Set canvas size
+                canvas.height = 140;
+                const context = canvas.getContext('2d');
+                context.font = font;
+                context.fillStyle = color;
+                context.fillText(text, 10, 50);
+
+                const texture = new THREE.CanvasTexture(canvas);
+                const material = new THREE.SpriteMaterial({ map: texture });
+                const sprite = new THREE.Sprite(material);
+
+                sprite.position.copy(position);
+                sprite.scale.set(12, 6, 1); // Adjust the size as needed
+
+                // Store the initial and expanded text in the sprite for easy access
+                sprite.userData.initialText = text;
+                sprite.userData.expandedText = expandedText;
+                sprite.userData.expanded = false; // Track expansion state
+
+                // Add an event listener for interaction
+                sprite.callback = function () {
+                    const currentText = sprite.userData.expanded ? sprite.userData.initialText : sprite.userData.expandedText;
+                    updateLabelTexture(sprite, currentText);
+                    sprite.userData.expanded = !sprite.userData.expanded; // Toggle state
+                };
+
+                scene.add(sprite);
+            }
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+
+            function onMouseClick(event) {
+                // Calculate mouse position in normalized device coordinates
+                // (-1 to +1) for both components
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+                // Update the picking ray with the camera and mouse position
+                raycaster.setFromCamera(mouse, camera);
+
+                // Calculate objects intersecting the picking ray
+                const intersects = raycaster.intersectObjects(scene.children);
+
+                for (let i = 0; i < intersects.length; i++) {
+                    if (intersects[i].object.callback) {
+                        intersects[i].object.callback();
+                        break; // Assume only one object will be clicked
+                    }
+                }
+            }
+
+            window.addEventListener('click', onMouseClick, false);
+
+            function onTouchEnd(event) {
+                // Prevent the window from scrolling
+                event.preventDefault();
+
+                // Use the first touch point
+                const touch = event.changedTouches[0];
+
+                mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = - (touch.clientY / window.innerHeight) * 2 + 1;
+
+                // The rest of the function remains the same as onMouseClick
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(scene.children);
+
+                for (let i = 0; i < intersects.length; i++) {
+                    if (intersects[i].object.callback) {
+                        intersects[i].object.callback();
+                        break; // Assume only one object will be clicked
+                    }
+                }
+            }
+
+            window.addEventListener('touchend', onTouchEnd, false);
+
+            window.addEventListener('resize', onWindowResize, false);
+
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                cssRenderer.setSize(window.innerWidth, window.innerHeight);
+            }
+            createTextLabel("The End", new THREE.Vector3(-32, 0, -30), "Vodka Mates and Pretzels", "white", "bold 22px Courier New");
+            createTextLabel("Boiler Room", new THREE.Vector3(11, 2, -7), "Nostradamus: 11 PM", "white", "bold 22px Courier New");
+            createTextLabel("Narcan", new THREE.Vector3(18.5, 6, -28), "Save a life", "red", "bold 24px Courier New");
+            createTextLabel("Main Stage", new THREE.Vector3(18, 10, 11.5), "Ethan Farah->Vincent", "blue", "bold 24px Courier New");
+            createTextLabel("Trap", new THREE.Vector3(37, -6, -25.5), "Blazed type shit", "green", "bold 26px Courier New");
+            createTextLabel("RDS", new THREE.Vector3(25, -6, -20.50), "G&T or Moscow", "pink", "bold 26px Courier New");
+            createTextLabel("Lounge", new THREE.Vector3(0, 8, 14.5), "JAEGERRRRRR", "pink", "bold 26px Courier New");
+            
+            
+
+            // Set camera position
+            camera.position.set(0, 20, 0);
+
+            // Render the scene
+                function animate() {
+            requestAnimationFrame(animate);
+            controls.update(); // Only required if controls.enableDamping = true, or if controls.autoRotate = true
+            renderer.render(scene, camera);
+            cssRenderer.render(scene, camera);
+        }
+
+            animate();
+        </script>
+    </div>
+
+    <style>
+        .annotation {
+            position: absolute;
+            pointer-events: none;
+        }
+    </style>
+</body>
+</html>
