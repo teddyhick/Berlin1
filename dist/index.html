@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Berlin</title>
+    <style>
+        .header img {
+            max-width: 100%;
+            height: auto;
+        .annotation {
+            position: absolute;
+            pointer-events: none;
+        }
+    </style>
+    <div class="header">
+        <img src="/assets/Berlin-kX_eI1JR.jpg" alt="Berlin Cityscape">
+    </div>
+    <style>
+        .annotation {
+            position: absolute;
+            pointer-events: none;
+        }
+    </style>
+  <script type="module" crossorigin src="/assets/index-UTX9jI8v.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-5VqHB_QT.css">
+</head>
+<body>
+    <div id="model-container"></div>
+    <!-- <script>
+        // Function to add annotation with expandable behavior
+        function addExpandableAnnotation(text, position, expandedText) {
+            // Create a DOM element for the annotation
+            var label = document.createElement('div');
+            label.className = 'annotation';
+            label.textContent = text;
+
+            // Create a THREE.CSS2DObject to position the annotation in 3D space
+            var labelObject = new CSS2DObject(label);
+
+            // Set the position based on the provided Vector3 coordinates
+            labelObject.position.copy(position);
+
+            // Add an event listener for the click event to handle expansion
+            label.addEventListener('click', function () {
+                if (label.textContent === text) {
+                    // If the label is not expanded, expand it
+                    label.textContent = expandedText;
+                } else {
+                    // If the label is expanded, collapse it
+                    label.textContent = text;
+                }
+            });
+
+            // Add the annotation to the scene
+            scene.add(labelObject);
+        }
+
+        // Example of adding an expandable annotation
+    </script>
+    <script type="module">
+        addExpandableAnnotation("The End", new THREE.Vector3(-5, 12, .867), "Vodka Mates and Food");
+    </script> -->
+</body>
+</html>

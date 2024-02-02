@@ -19,37 +19,171 @@
         <img src="Berlin.jpg" alt="Berlin Cityscape">
     </div>
     <script type="module">
-        import * as THREE from node_modules/three/build/three.module.js
-        import { OBJLoader } from node_modules/three/examples/jsm/loaders
-        import { OrbitControls } from node_modules/three/addons/controls/OrbitControls.js 
+            import * as THREE from 'three';
+    import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-        // Set up Three.js scene
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        const cssRenderer = new CSS2DRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        cssRenderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-        document.body.appendChild(cssRenderer.domElement);
+var container;
 
-        // Load the .fbx model
-        const loader = new FBXLoader();
-        loader.load('Hausmap1.fbx', function (object) {
-            scene.add(object);
-        });
+var camera, scene, renderer;
 
-        // Set camera position
-        camera.position.z = 5;
+init();
+animate();
 
-        // Render the scene
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-            cssRenderer.render(scene, camera);
+
+function init() {
+
+	container = document.createElement( 'div' );
+	document.body.appendChild( container );
+
+	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.01, 10 );
+	camera.position.z = 5;
+
+	// scene
+
+	scene = new THREE.Scene();
+
+	var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+	scene.add( ambientLight );
+
+	var pointLight = new THREE.PointLight( 0xffffff, 0.8 );
+	camera.add( pointLight );
+	scene.add( camera );
+
+	// model
+
+	var loader = new OBJLoader();
+
+	loader.load( 'Hausmap.obj', function ( obj ) {
+
+		// center asset
+
+		var box = new THREE.Box3().setFromObject( obj );
+		var center = new THREE.Vector3();
+		box.getCenter( center );
+		obj.position.sub( center );
+
+		// add to scene
+
+		scene.add( obj );
+
+	} );
+
+	//
+
+	renderer = new THREE.WebGLRenderer();
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	container.appendChild( renderer.domElement );
+
+	var controls = new OrbitControls( camera, renderer.domElement );
+
+	//
+
+	window.addEventListener( 'resize', onWindowResize, false );
+
+}
+
+function onWindowResize() {
+
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+
+	renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
+//
+
+function animate() {
+
+	requestAnimationFrame( animate );
+	render();
+
+}
+
+function render() {
+
+	renderer.render( scene, camera );
+
+}
+
+//     const scene = new THREE.Scene();
+// const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+// const renderer = new THREE.WebGLRenderer();
+// renderer.setSize( window.innerWidth, window.innerHeight );
+// document.body.appendChild( renderer.domElement );
+
+// const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+// const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+// const cube = new THREE.Mesh( geometry, material );
+// scene.add( cube );
+
+// camera.position.z = 5;
+
+// function animate() {
+// 	requestAnimationFrame( animate );
+
+// 	cube.rotation.x += 0.01;
+// 	cube.rotation.y += 0.01;
+
+// 	renderer.render( scene, camera );
+// }
+
+// animate();
+//     // // Set up Three.js scene
+//     // var scene = new THREE.Scene();
+//     // var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    
+//     // // Set camera position
+//     // camera.position.z = 5;
+
+//     // // Load the .obj model
+//     // const loader = new OBJLoader();
+//     // loader.load('Hausmap.obj', function (object) {
+//     //     scene.add(object);
+//     //     var renderer = new THREE.WebGLRenderer();
+//     //     renderer.setSize(window.innerWidth, window.innerHeight);
+//     //     document.getElementById('model-container').appendChild(renderer.domElement);
+
+//     //         // Render the scene
+//     // function animate() {
+//     //     requestAnimationFrame(animate);
+//     //     renderer.render(scene, camera);
+//     // }
+
+//     // animate();
+//     // });
+
+//     // Annotate the model
+//     // Function to add annotation with expandable behavior
+function addExpandableAnnotation(text, position, expandedText) {
+    // Create a DOM element for the annotation
+    var label = document.createElement('div');
+    label.className = 'annotation';
+    label.textContent = text;
+
+    // Create a THREE.CSS2DObject to position the annotation in 3D space
+    var labelObject = new THREE.CSS2DObject(label);
+
+    // Set the position based on the provided Vector3 coordinates
+    labelObject.position.copy(position);
+
+    // Add an event listener for the click event to handle expansion
+    label.addEventListener('click', function () {
+        if (label.textContent === text) {
+            // If the label is not expanded, expand it
+            label.textContent = expandedText;
+        } else {
+            // If the label is expanded, collapse it
+            label.textContent = text;
         }
+    });
 
-        animate();
+    // Add the annotation to the scene
+    scene.add(labelObject);
+}
     </script>
     <style>
         .annotation {
@@ -60,7 +194,7 @@
 </head>
 <body>
     <div id="model-container"></div>
-    <script>
+    <!-- <script>
         // Function to add annotation with expandable behavior
         function addExpandableAnnotation(text, position, expandedText) {
             // Create a DOM element for the annotation
@@ -93,6 +227,6 @@
     </script>
     <script type="module">
         addExpandableAnnotation("The End", new THREE.Vector3(-5, 12, .867), "Vodka Mates and Food");
-    </script>
+    </script> -->
 </body>
 </html>
